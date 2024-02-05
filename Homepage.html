@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="style1.css" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
+      crossorigin="anonymous"
+    />
+    <title>Welcome to open</title>
+    <!-- <style>
+      body {
+        background-image: url("1.png");
+        width: 50%;
+        height: 50%;
+      }
+    </style> -->
+  </head>
+  <body>
+    <header>
+      <nav class="navbar">
+        <div class="left">
+          <h1>DCC BANK</h1>
+        </div>
+        <div class="right">
+          <input type="checkbox" id="check" />
+          <label for="check" class="checkBtn">
+            <i class="fa fa-bars"></i>
+          </label>
+          <ul class="list">
+            <li><a href="Home.html">Home</a></li>
+            <li><a href="#">About Us</a></li>
+            <li><a href="#">Services</a></li>
+            <li><a href="Contact.html">Contact Us</a></li>
+          </ul>
+        </div>
+        <!-- <form class="example" action="/action_page.php">
+        <input type="text" placeholder="Search.." name="search" />
+        <button type="submit">Click</button>
+      </form> -->
+
+        <!-- <form
+        class="example"
+        action="/action_page.php"
+        style="margin: auto; max-width: 300px"
+      >
+        <input type="text" placeholder="Search.." name="search2" />
+        <button type="submit"><i class="fa fa-search"></i></button>
+      </form> -->
+      </nav>
+    </header>
+    <div class="d-flex justify-content-center align-items-center ms-5 me-5">
+      <div class="input-group mt-5 mb-5">
+        <input
+          type="text"
+          oninput="search()"
+          id="searchBox"
+          class="form-control"
+          placeholder="Search by name"
+          aria-label="Search"
+          aria-describedby="search-addon"
+        />
+        <button type="submit" class="btn btn-dark" data-mdb-ripple-init>
+          Search
+        </button>
+      </div>
+
+      <div class="input-group mt-5 mb-5">
+        <input
+          type="search"
+          oninput="searchByAccount()"
+          id="searchBoxAcc"
+          class="form-control ms-5"
+          placeholder="Search by Account no"
+          aria-label="Search"
+          aria-describedby="search-addon"
+        />
+        <button type="submit" class="btn btn-primary" data-mdb-ripple-init>
+          Search
+        </button>
+      </div>
+
+      <!-- <img src="https://icons.iconarchive.com/icons/custom-icon-design/pretty-office-8/256/Users-icon.png"
+                        class="card-img-top  w-25" alt="...">-->
+    </div>
+
+    <div class="col-md-12">
+      <table id="dynamicTable" class="table text-center">
+        <thead class="thead-dark">
+          <tr>
+            <th>Account No</th>
+            <th>Name</th>
+            <th>Balance</th>
+            <th>Mobile</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+      </table>
+    </div>
+    <div class="fotter">
+      <div class="col2">
+        <h3 style="color: bisque">Email Address..</h3>
+        <form>
+          <input type="email" placeholder="Your Email Address" required /><br />
+          <button type="submit">Subscribe Now</button>
+        </form>
+      </div>
+
+      <div class="socialicon">
+        <i class="fab fa-facebook"></i>
+        <i class="fab fa-instagram"></i>
+        <i class="fab fa-twitter"></i>
+      </div>
+    </div>
+
+    <script>
+      function showData() {
+        let xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function () {
+          if (this.readyState == 4 && this.status == 200) {
+            // Parse the JSON response
+            let data = JSON.parse(this.responseText);
+
+            // Get the table element
+            let table = document.getElementById("dynamicTable");
+
+            // Loop through the data and add rows to the table
+            for (let i = 0; i < data.length; i++) {
+              let row = table.insertRow(-1); // -1 appends the row at the end
+              let cell1 = row.insertCell(0);
+              let cell2 = row.insertCell(1);
+              let cell3 = row.insertCell(2);
+              let cell4 = row.insertCell(3);
+              let cell5 = row.insertCell(4);
+              let cellDel = row.insertCell(5);
+
+              // Add more cells if needed
+
+              // Populate the cells with data
+              cell1.innerHTML = data[i].accountNo;
+              cell2.innerHTML = data[i].name;
+              cell3.innerHTML = data[i].balance;
+              cell4.innerHTML = data[i].mobile;
+              cell5.innerHTML = data[i].status;
+              cellDel.innerHTML = ` <button class="btn btn-danger" onclick="deleteData(${data[i].accountNo})">Delete</button> `;
+              // Add more cells if needed
+            }
+          }
+        };
+
+        // Make a GET request to your servlet
+        xhttp.open("GET", "fetchCustomers", true);
+        xhttp.send();
+      }
+
+      showData();
+
+      function search() {
+        let sb = document.getElementById("searchBox");
+
+        console.log(sb.value);
+
+        let xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function () {
+          if (this.readyState == 4 && this.status == 200) {
+            // Parse the JSON response
+            let data = JSON.parse(this.responseText);
+
+            // Get the table element
+            let table = document.getElementById("dynamicTable");
+
+            // Clear existing rows in the table
+            table.innerHTML = "";
+
+            // Loop through the data and add rows to the table
+            for (let i = 0; i < data.length; i++) {
+              let row = table.insertRow(-1); // -1 appends the row at the end
+              let cell1 = row.insertCell(0);
+              let cell2 = row.insertCell(1);
+              let cell3 = row.insertCell(2);
+              let cell4 = row.insertCell(3);
+              let cell5 = row.insertCell(4);
+              let cellDel = row.insertCell(5);
+
+              // Populate the cells with data
+              cell1.innerHTML = data[i].accountNo;
+              cell2.innerHTML = data[i].name;
+              cell3.innerHTML = data[i].balance;
+              cell4.innerHTML = data[i].mobile;
+              cell5.innerHTML = data[i].status;
+              cellDel.innerHTML = ` <button class="btn btn-danger" onclick="deleteData(${data[i].accountNo})">Delete</button> `;
+            }
+          }
+        };
+
+        // Make a GET request to your servlet for search data
+        xhttp.open("GET", "fetchByName?name=" + sb.value, true);
+        xhttp.send();
+      }
+
+      function searchByAccount() {
+        let sb = document.getElementById("searchBoxAcc");
+
+        console.log(sb.value);
+
+        let xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function () {
+          if (this.readyState == 4 && this.status == 200) {
+            // Parse the JSON response
+            let data = JSON.parse(this.responseText);
+
+            // Get the table element
+            let table = document.getElementById("dynamicTable");
+
+            // Clear existing rows in the table
+            table.innerHTML = "";
+
+            // Loop through the data and add rows to the table
+            for (let i = 0; i < data.length; i++) {
+              let row = table.insertRow(-1); // -1 appends the row at the end
+              let cell1 = row.insertCell(0);
+              let cell2 = row.insertCell(1);
+              let cell3 = row.insertCell(2);
+              let cell4 = row.insertCell(3);
+              let cell5 = row.insertCell(4);
+              let cellDel = row.insertCell(5);
+
+              // Populate the cells with data
+              cell1.innerHTML = data[i].accountNo;
+              cell2.innerHTML = data[i].name;
+              cell3.innerHTML = data[i].balance;
+              cell4.innerHTML = data[i].mobile;
+              cell5.innerHTML = data[i].status;
+              cellDel.innerHTML = ` <button class="btn btn-danger" onclick="deleteData(${data[i].accountNo})">Delete</button> `;
+            }
+          }
+        };
+
+        // Make a GET request to your servlet for search data
+        xhttp.open("GET", "fetchByAcc?account=" + sb.value, true);
+        xhttp.send();
+      }
+
+      function deleteData(id) {
+        console.log(id);
+        var xhttp = new XMLHttpRequest();
+
+        // Define the function to handle the response
+        xhttp.onreadystatechange = function () {
+          if (this.readyState == 4 && this.status == 200) {
+            // Handle the response from the servlet
+            console.log(this.responseText);
+          }
+        };
+
+        // Open a GET request to your servlet, passing the accountNumber as a parameter
+        xhttp.open("GET", "removeCustomerURL?accountNumber=" + id, true);
+
+        // Send the request
+        xhttp.send();
+
+        location.reload();
+
+        alert("Account deleted successfully");
+      }
+    </script>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  </body>
+</html>
